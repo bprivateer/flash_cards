@@ -97,11 +97,11 @@ router.get('/deck/:id', function(req, res){
 })
 
 router.post('/deck/:id', function(req, res){
-  console.log(req.user.id);
+  // console.log(req.user.id);
   Model.Card.create({
     question: req.body.question,
     body: req.body.body,
-    userId: req.user.id,
+    // userId: req.user.id,
     deckId:req.params.id
 
   }).then(function(data){
@@ -115,27 +115,28 @@ router.post('/deck/:id', function(req, res){
 router.get('/editdelete/:id', function(req, res){
   Model.Card.findById(req.params.id)
   .then(function(data){
+    console.log("editdelete data!!!!!", data);
     res.render('editdelete',{data: data})
   })
 })
 
 
-  router.post('/:deckId/edit/:id', function(req, res){
-    console.log("RERREREERR",req.params.id);
+  router.post('/card/:deckId/edit/:id', function(req, res){
     Model.Card.update( {
       question: req.body.question,
       body: req.body.body,
     }, {where: {id: req.params.id}}
   )
     .then(function(data){
-      res.redirect('/editdelete' + req.params.id)
+      console.log(req.params.id);
+      res.redirect('/deck/' + req.params.deckId)
     }).catch(function(err){
       console.log("error", error);
-      res.redirect('/editdelete/' + req.params.id)
+      res.redirect('/deck/' + req.params.deckId)
     })
   })
 
-  router.post('/deck/:deckId/delete/:id', function(req, res){
+  router.post('/card/:deckId/delete/:id', function(req, res){
       Model.Card.destroy({where:{id:req.params.id}})
     .then(function(data){
         res.redirect('/deck/' + req.params.deckId)
@@ -145,6 +146,23 @@ router.get('/editdelete/:id', function(req, res){
       res.redirect('/editdelete/:id')
 
   })
+})
+
+//  /test/:id
+router.get('/test/:deckId/deck/:id', function(req, res){
+Model.Deck.findById(req.params.deckId)
+.then(function(data){
+  Model.Card.findAll({include: [{ as: 'Cards', model: Model.Card}]})
+  .then(function(data){
+    console.log(data);
+    res.render('test', {data: data })
+  }).catch(function(err){
+    res.redirect('/deck/' + req.params.deckId)
+  })
+
+})
+
+
 })
 
 
