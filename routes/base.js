@@ -67,7 +67,7 @@ router.get('/home', function(req, res){
   })
 })
 
-router.get('makedeck', function(req, res){
+router.get('/makedeck', function(req, res){
 res.render('makedeck')
 })
 
@@ -84,7 +84,23 @@ router.post('/makedeck', function(req, res){
 })
 
 router.get('/deck/:id', function(req, res){
-  
+  Model.Deck.findById(req.params.id,
+     {include: [{ as: 'Users', model: Model.User}, {model: Model.Card, as: 'Cards'}]
+   })
+  .then(function(data){
+    res.render('deck', {data: data})
+  }).catch(function(err){
+
+  })
+})
+
+router.post('/newcard', function(req, res){
+  Model.Card.create({
+    question: req.body.question,
+    body: req.body.body,
+    userId: req.body.user,
+    deckId:req.params.id
+  })
 })
 
 
