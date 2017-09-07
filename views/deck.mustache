@@ -1,11 +1,20 @@
-<form class="" action="/makedeck" method="post">
-  <input type="text" name="deckName" value="" placeholder="Name of Deck">
-  <button type="submit"> Make a deck here!</button>
+
+<br>
+<br>
+Make your questions/cards here!
+<br>
+<form class="" action="/deck/{{data.id}}" method="post">
+  <input type="text" name="question" value="" placeholder="What's the question?">
+  <input type="text" name="body" value="" placeholder="Answer of question">
+  <button type="submit">Make my question</button>
 </form>
+
 <br><br>
 
-{{#data}}
-
-<a href="/makecard">Make Cards</a><br>
-<a href="/edit">Edit and Delete</a><br>
-{{/data}}
+{{#deck}}
+{{deckName}}
+{{#Cards}}
+{{question}}
+<a href="/edit/:id">Edit and Delete</a><br>
+{{/Cards}}
+{{/deck}}

@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     userId: DataTypes.INTEGER
   }, {});
 
-Deck.asscociate = (function(models){
+Deck.associate = (function(models){
   Deck.belongsTo(models.User, { as: 'Users', foreignKey: 'userId'});
   Deck.hasMany(models.Card, { as: 'Cards', foreignKey: 'deckId'});
 })

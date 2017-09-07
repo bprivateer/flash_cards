@@ -59,11 +59,12 @@ let newUser = {
 });
 
 router.get('/home', function(req, res){
-  Model.Deck.findAll()
+  Model.Deck.findAll({include: [{ as: 'Cards', model: Model.Card}]})
   .then(function(data){
+    // console.log(Cards);
     res.render("home", {data : data})
   }).catch(function(err){
-
+     res.redirect('/')
   })
 })
 
@@ -76,7 +77,7 @@ router.post('/makedeck', function(req, res){
     deckName: req.body.deckName,
     userId: req.user.id,
   }).then(function(data){
-
+// console.log(data.cardId);
     res.redirect('/home')
   }).catch(function(err){
     res.redirect('/makedeck')
@@ -85,24 +86,57 @@ router.post('/makedeck', function(req, res){
 
 router.get('/deck/:id', function(req, res){
   Model.Deck.findById(req.params.id,
-     {include: [{ as: 'Users', model: Model.User}, {model: Model.Card, as: 'Cards'}]
+     {include: [{model: Model.User, as: 'Users', model: Model.Card, as: 'Cards'}]
    })
   .then(function(data){
-    res.render('deck', {data: data})
+    console.log(data.question);
+    res.render('deck', {deck: data})
   }).catch(function(err){
-
+    console.log("error", err);
+    res.redirect('/home')
   })
 })
 
-router.post('/newcard', function(req, res){
+router.post('/deck/:id', function(req, res){
   Model.Card.create({
     question: req.body.question,
     body: req.body.body,
-    userId: req.body.user,
+    userId: req.user.id,
     deckId:req.params.id
+
+  }).then(function(data){
+    res.redirect('/deck/:id')
+  }).catch(function(err){
+    console.log(err, "error");
+    res.redirect('/deck/:id')
   })
-})
+});
 
 
+  router.get('/edit/:id/:card', function(req, res){
+    Model.Card.update()
+
+    res.render('card')
+  })
+
+  router.get('/delete/:id', function(req, res){
+    Model.Card.findById(req.params.id)
+    .then(function(data){
+      Model.Card.destroy({where:{id:req.params.id}})
+    }).then(function(data){
+      res.redirect('/deck/:id')
+    }).catch(function(err){
+      console.log(err);
+      res.redirect('/edit/:id')
+
+    })
+  })
+
+
+
+  router.get("/logout", function(req, res) {
+  req.logout();
+  res.redirect("/");
+});
 
 module.exports = router;
