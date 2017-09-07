@@ -3,7 +3,7 @@
 <br>
 Make your questions/cards here!
 <br>
-<form class="" action="/deck/{{data.id}}" method="post">
+<form class="" action="/deck/{{deck.id}}" method="post">
   <input type="text" name="question" value="" placeholder="What's the question?">
   <input type="text" name="body" value="" placeholder="Answer of question">
   <button type="submit">Make my question</button>
@@ -12,9 +12,9 @@ Make your questions/cards here!
 <br><br>
 
 {{#deck}}
-{{deckName}}
+{{deckName}}<br>
 {{#Cards}}
 {{question}}
-<a href="/edit/:id">Edit and Delete</a><br>
+<a href="/editdelete/{{id}}">Edit and Delete</a><br>
 {{/Cards}}
 {{/deck}}

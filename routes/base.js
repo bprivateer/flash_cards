@@ -89,7 +89,6 @@ router.get('/deck/:id', function(req, res){
      {include: [{model: Model.User, as: 'Users', model: Model.Card, as: 'Cards'}]
    })
   .then(function(data){
-    console.log(data.question);
     res.render('deck', {deck: data})
   }).catch(function(err){
     console.log("error", err);
@@ -98,6 +97,7 @@ router.get('/deck/:id', function(req, res){
 })
 
 router.post('/deck/:id', function(req, res){
+  console.log(req.user.id);
   Model.Card.create({
     question: req.body.question,
     body: req.body.body,
@@ -107,30 +107,46 @@ router.post('/deck/:id', function(req, res){
   }).then(function(data){
     res.redirect('/deck/:id')
   }).catch(function(err){
-    console.log(err, "error");
     res.redirect('/deck/:id')
+    console.log(err, "error");
   })
 });
 
-
-  router.get('/edit/:id/:card', function(req, res){
-    Model.Card.update()
-
-    res.render('card')
+router.get('/editdelete/:id', function(req, res){
+  Model.Card.findById(req.params.id)
+  .then(function(data){
+    res.render('editdelete',{data: data})
   })
+})
 
-  router.get('/delete/:id', function(req, res){
-    Model.Card.findById(req.params.id)
+
+  router.post('/:deckId/edit/:id', function(req, res){
+    console.log("RERREREERR",req.params.id);
+    Model.Card.update( {
+      question: req.body.question,
+      body: req.body.body,
+    }, {where: {id: req.params.id}}
+  )
     .then(function(data){
-      Model.Card.destroy({where:{id:req.params.id}})
-    }).then(function(data){
-      res.redirect('/deck/:id')
+      res.redirect('/editdelete' + req.params.id)
     }).catch(function(err){
-      console.log(err);
-      res.redirect('/edit/:id')
-
+      console.log("error", error);
+      res.redirect('/editdelete/' + req.params.id)
     })
   })
+
+  router.post('/deck/:deckId/delete/:id', function(req, res){
+      Model.Card.destroy({where:{id:req.params.id}})
+    .then(function(data){
+        res.redirect('/deck/' + req.params.deckId)
+      console.log("DAAAAA", data);
+    }).catch(function(err){
+      console.log("error", err);
+      res.redirect('/editdelete/:id')
+
+  })
+})
+
 
 
 

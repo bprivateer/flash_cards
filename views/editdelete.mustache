@@ -1,0 +1,13 @@
+Edit or delete your card<br><br>
+<form class="" action="/{{deckId}}/edit/{{data.id}}" method="post">
+<input type="text" name="question" value="" placeholder="Change the question">
+<input type="text" name="body" value="" placeholder="Change the answer">
+<button type="submit">Change my Flip Card!</button>
+</form>
+
+<br>
+<br>
+
+<form class="" action="/{{deckId}}/delete/{{data.id}}" method="post">
+  <button type="submit">Get rid of this card</button>
+</form>
