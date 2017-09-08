@@ -1,6 +1,16 @@
-Take the test here
+<div class="">
+
+
 <br>
 <hr>
 {{#data}}
-{{.}}<br>
+Take the test on {{deckName}} here<br>
+<form class="" action="/test/{{id}}}/answer/{{data.Card.id}}" method="get">
+{{#arr}}
+{{dataValues.question}}<br><br>
+<button type="submit">Flip card</button>
+{{/arr}}
+</form>
+<br>
 {{/data}}
+</div>

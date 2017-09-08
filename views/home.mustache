@@ -1,19 +1,22 @@
-Home Page!
+<div class="home">
+
 <br>
 <hr>
-<a href='/makedeck'>Make a deck here</a>
+<h2><a href='/makedeck'>Make a deck here</a></h2>
 <br>
 <br>
-<div class="decks">
-  Take a look at all of my decks!
+
+  --- look all of my decks! ---
 
 {{#data}}
 <br>
 <br>
+<div class="decks">
 Deckname : {{deckName}}<br>
 How many Cards? : {{Cards.length}}<br>
 <a href="/deck/{{id}}">Check out my deck here</a><br><br>
-<a href="/test/{{deckid}}/deck/{{id}}">Take the test on {{deckName}} here!</a><br><br>
+<a href="/test/{{id}}">Take the test on {{deckName}} here!</a><br><br>
 {{/data}}
 
+</div>
 </div>

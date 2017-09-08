@@ -1,5 +1,93 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #DB7093;
+  text-decoration: none;
+}
+
 header {
+  background-color: #FFE4E1;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  height: 40px;
+  justify-content: space-around;
+  padding: 20px;
+
+}
+
+input {
+
+}
+
+.signup {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 20px;
+  padding: 20px;
+  width: 200px;
+
+}
+
+hr {
+  color: black;
+  width: 500px;
+
+}
+
+.home {
+  /*display: flex;
+  flex-flow: column wrap;*/
+   text-align: center;
+   justify-content: center;
+
+}
+
+center {
+  align-content: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  margin: 100px auto;
+  width: 300px;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+}
+
+.login {
+  border-right: #DB7093 solid 2px;
+  padding: 30px;
+
+
+}
+
+/*.cards {
+  border: black solid 1px;
+  padding: 5px;
+}*/
+
+.decks {
+  border: black solid 1px;
+  /*display: flex;*/
+  /*flex-flow: column wrap;*/
+  height: 100px;
+  justify-content: center;
+  margin: 10px;
+  padding: 10px;
+  width: 500px;
+}
+.card {
+  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
 }

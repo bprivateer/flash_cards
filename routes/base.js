@@ -23,9 +23,6 @@ router.post('/', passport.authenticate('local',
 ));
 
 
-router.get('/signup', function(req, res){
-  res.render('signup')
-});
 
 router.post('/signup', function(req, res){
 
@@ -35,7 +32,7 @@ let name = req.body.name
 
 if (!username || !password) {
   req.flash('error', "Please, fill in all the fields.")
-  res.redirect('signup')
+  res.redirect('/login')
 }
 
 let salt = bcrypt.genSaltSync(10)
@@ -105,9 +102,9 @@ router.post('/deck/:id', function(req, res){
     deckId:req.params.id
 
   }).then(function(data){
-    res.redirect('/deck/:id')
+    res.redirect('/deck/' + req.params.id)
   }).catch(function(err){
-    res.redirect('/deck/:id')
+    res.redirect('/deck/' + req.params.id)
     console.log(err, "error");
   })
 });
@@ -128,7 +125,7 @@ router.get('/editdelete/:id', function(req, res){
     }, {where: {id: req.params.id}}
   )
     .then(function(data){
-      console.log(req.params.id);
+      console.log("DEDEDEEEDEDEDD", req.params.deckId);
       res.redirect('/deck/' + req.params.deckId)
     }).catch(function(err){
       console.log("error", error);
@@ -143,28 +140,45 @@ router.get('/editdelete/:id', function(req, res){
       console.log("DAAAAA", data);
     }).catch(function(err){
       console.log("error", err);
-      res.redirect('/editdelete/:id')
+      res.redirect('/editdelete/' + req.params.deckId)
 
   })
 })
 
 //  /test/:id
-router.get('/test/:deckId/deck/:id', function(req, res){
-Model.Deck.findById(req.params.deckId)
+router.get('/test/:id', function(req, res){
+Model.Deck.findById( req.params.id, {include: [{ model: Model.Card, as: 'Cards'}]})
 .then(function(data){
-  Model.Card.findAll({include: [{ as: 'Cards', model: Model.Card}]})
-  .then(function(data){
-    console.log(data);
-    res.render('test', {data: data })
-  }).catch(function(err){
-    res.redirect('/deck/' + req.params.deckId)
+  console.log("DATATATA", data);
+  // Model.Card.findAll({where: {deckId: req.params.id}})
+  // .then(function(data){
+    let arr = [];
+
+    data.Cards.forEach(function(card){
+       arr.push(card);
+
+      //  console.log("ARRAY 2 2 AYYYA2", user.dataValues.id);
+    // console.log("TEEEEESSST",data);
   })
-
+  console.log("ARARARA",arr);
+  res.render('test', {data: data, arr: arr})
+// })
+}).catch(function(err){
+  res.redirect('/deck/' + req.params.id)
 })
+});
 
-
+router.get('/deck/:deckId/answer/:id', (function(req, res){
+  Model.Card.findById({where: {id: req.params.id}})
+  .then(function(data){
+    console.log("DAÀAAAA", data);
+res.render('answer', {data: data})
+  }).catch(function(err){
+    console.log("ERERERER", err);
+    res.redirect('/test/' + req.params.deckId)
+  })
 })
-
+)
 
 
 

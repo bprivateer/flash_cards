@@ -10,12 +10,15 @@ Make your questions/cards here!
 </form>
 
 <br><br>
-
+<div class="cards">
 {{#deck}}
-<a href="/test/{{deck.id}}">Test yourself!</a>
+<a href="/test/{{id}}">Test Myself!</a>
 {{deckName}}<br>
 {{#Cards}}
+<div class="card">
 {{question}}
 <a href="/editdelete/{{id}}">Edit and Delete</a><br>
+</div>
 {{/Cards}}
 {{/deck}}
+</div>
