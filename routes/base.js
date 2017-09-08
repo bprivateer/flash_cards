@@ -145,28 +145,36 @@ router.get('/editdelete/:id', function(req, res){
   })
 })
 
+
+
+
+// function random() {
+//     return cards[ Math.floor(Math.random() * cards.length)];
+//   }
 //  /test/:id
 router.get('/test/:id', function(req, res){
 Model.Deck.findById( req.params.id, {include: [{ model: Model.Card, as: 'Cards'}]})
 .then(function(data){
   console.log("DATATATA", data);
-  // Model.Card.findAll({where: {deckId: req.params.id}})
-  // .then(function(data){
+
+    let cards = data.Cards;
+    let length = cards.length;
     let arr = [];
+    
+  for(var i=0; i< length; i++) {
+      arr.push(cards.splice(Math.floor(Math.random()*cards.length), 1)[0]);
+  }
 
-    data.Cards.forEach(function(card){
-       arr.push(card);
 
-      //  console.log("ARRAY 2 2 AYYYA2", user.dataValues.id);
-    // console.log("TEEEEESSST",data);
-  })
   console.log("ARARARA",arr);
   res.render('test', {data: data, arr: arr})
-// })
+
 }).catch(function(err){
+  console.log("ERERER", err);
   res.redirect('/deck/' + req.params.id)
 })
 });
+
 
 router.get('/deck/:deckId/answer/:id', (function(req, res){
   Model.Card.findById({where: {id: req.params.id}})

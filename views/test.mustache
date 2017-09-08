@@ -1,16 +1,25 @@
-<div class="">
-
+<div class="test">
 
 <br>
 <hr>
-{{#data}}
-Take the test on {{deckName}} here<br>
-<form class="" action="/test/{{id}}}/answer/{{data.Card.id}}" method="get">
+<p>
+<form class="test" action="/test/{{id}}}/answer/{{data.Card.id}}" method="get">
+{{#data}}<br><br>
+Take the test on {{deckName}} here ..<br>
+Hover over the question to find your answer then record whether you were correct or incorrect!<br><br>
 {{#arr}}
-{{dataValues.question}}<br><br>
+<div class="cards">
+  <div class="question">
+  <h3>{{dataValues.question}}</h3><br>
+<div class="answer">
+  {{dataValues.body}}<br>
+  </div>
+</div>
 <button type="submit">Flip card</button>
+</div>
+</p>
 {{/arr}}
-</form>
 <br>
 {{/data}}
+</form>
 </div>
