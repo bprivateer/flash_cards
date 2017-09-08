@@ -3,7 +3,6 @@
 <br>
 <hr>
 <p>
-<form class="test" action="/test/{{id}}}/answer/{{data.Card.id}}" method="get">
 {{#data}}<br><br>
 Take the test on {{deckName}} here ..<br>
 Hover over the question to find your answer then record whether you were correct or incorrect!<br><br>
@@ -15,7 +14,8 @@ Hover over the question to find your answer then record whether you were correct
   {{dataValues.body}}<br>
   </div>
 </div>
-<button type="submit">Flip card</button>
+ <button type="submit" id="btnR">Correct</button>
+  <button type="submit" id="btnW">Incorrect</button>
 </div>
 </p>
 {{/arr}}
@@ -23,3 +23,4 @@ Hover over the question to find your answer then record whether you were correct
 {{/data}}
 </form>
 </div>
+<script src="main.js"></script>

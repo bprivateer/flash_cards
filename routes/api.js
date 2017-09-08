@@ -4,10 +4,10 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const passport = require('passport');
 
-const apiUser = {
-  username: bern,
-  password: pass
-}
+// const apiUser = {
+//   username: bern,
+//   password: pass
+// }
 
 const isAuthenticated = function (req, res, next) {
   console.log(req.isAuthenticated());
@@ -19,7 +19,7 @@ const isAuthenticated = function (req, res, next) {
   }
 
 router.get("/api", function(req, res) {
-  res.render("login", {messages: res.locals.getMessages()});
+  res.status(200).send("huh?");
 });
 
 router.post('/api', passport.authenticate('local',
@@ -29,7 +29,7 @@ router.post('/api', passport.authenticate('local',
 
 
 
-router.post('/api/signup', function(req, res){
+router.post('/api/signup', isAuthenticated, function(req, res){
 
 let username = req.body.username
 let password = req.body.password
@@ -60,11 +60,11 @@ let newUser = {
 
 });
 
-router.get('/api/home', function(req, res){
+router.get('/api/home', isAuthenticated, function(req, res){
   Model.Deck.findAll({include: [{ as: 'Cards', model: Model.Card}]})
   .then(function(data){
     // console.log(Cards);
-    res.render("home", {data : data})
+    res.json( {data : data})
   }).catch(function(err){
      res.redirect('/api')
   })
@@ -107,10 +107,9 @@ router.post('/api/deck/:id', function(req, res){
     deckId:req.params.id
 
   }).then(function(data){
-    res.redirect('/api/deck/' + req.params.id)
+    res.json({data: data})
   }).catch(function(err){
-    res.redirect('/api/deck/' + req.params.id)
-    console.log(err, "/api/error");
+    res.send('error')
   })
 });
 
@@ -131,21 +130,21 @@ router.get('/api/editdelete/:id', function(req, res){
   )
     .then(function(data){
       console.log("DEDEDEEEDEDEDD", req.params.deckId);
-      res.redirect('/api/deck/' + req.params.deckId)
+      res.json(data)
     }).catch(function(err){
       console.log("error", error);
-      res.redirect('/api/deck/' + req.params.deckId)
+      res.send("error")
     })
   })
 
   router.delete('/api/card/:deckId/delete/:id', function(req, res){
       Model.Card.destroy({where:{id:req.params.id}})
     .then(function(data){
-        res.redirect('/api/deck/' + req.params.deckId)
+        res.json({data: data})
       console.log("DAAAAA", data);
     }).catch(function(err){
       console.log("error", err);
-      res.redirect('/api/editdelete/' + req.params.deckId)
+      res.send("error")
 
   })
 })
@@ -165,26 +164,26 @@ Model.Deck.findById( req.params.id, {include: [{ model: Model.Card, as: 'Cards'}
 
 
   console.log("ARARARA",arr);
-  res.render('test', {data: data, arr: arr})
+  res.json({data: data, arr: arr})
 
 }).catch(function(err){
   console.log("ERERER", err);
-  res.redirect('/api/deck/' + req.params.id)
+  res.send("error")
 })
 });
 
 
-router.get('/api/deck/:deckId/answer/:id', (function(req, res){
-  Model.Card.findById({where: {id: req.params.id}})
-  .then(function(data){
-    console.log("DAÀAAAA", data);
-res.render('answer', {data: data})
-  }).catch(function(err){
-    console.log("ERERERER", err);
-    res.redirect('/api/test/' + req.params.deckId)
-  })
-})
-)
+// router.get('/api/deck/:deckId/answer/:id', (function(req, res){
+//   Model.Card.findById({where: {id: req.params.id}})
+//   .then(function(data){
+//     console.log("DAÀAAAA", data);
+// res.render('answer', {data: data})
+//   }).catch(function(err){
+//     console.log("ERERERER", err);
+//     res.redirect('/api/test/' + req.params.deckId)
+//   })
+// })
+// )
 
 
 
