@@ -145,13 +145,6 @@ router.get('/editdelete/:id', function(req, res){
   })
 })
 
-
-
-
-// function random() {
-//     return cards[ Math.floor(Math.random() * cards.length)];
-//   }
-//  /test/:id
 router.get('/test/:id', function(req, res){
 Model.Deck.findById( req.params.id, {include: [{ model: Model.Card, as: 'Cards'}]})
 .then(function(data){
@@ -160,7 +153,7 @@ Model.Deck.findById( req.params.id, {include: [{ model: Model.Card, as: 'Cards'}
     let cards = data.Cards;
     let length = cards.length;
     let arr = [];
-    
+
   for(var i=0; i< length; i++) {
       arr.push(cards.splice(Math.floor(Math.random()*cards.length), 1)[0]);
   }
